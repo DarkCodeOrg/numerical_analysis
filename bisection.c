@@ -1,47 +1,80 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<math.h>
-    // change your function y accordingly and its first derivative also 
-    // f(x) = y = x^3 - 12
+#include<stdlib.h>
 
-double y(double );
+
+float fn(float );
+float newtonraphson(double );
+
 
 int main(){
-    
+	// f(x) = x^3 + (4*x^2) - 10
     double x1,x2,xm;
- 
-    do
-    {
-        printf("enter two values containing the solution : ");
-        scanf("%lf %lf",&x1,&x2);
-    } while (y(x1)*y(x2)>0);
+    int count = 1;
     
-    xm = (x1+x2)/2.00 ;
 
-    while (fabs(x2-x1)>0.000000001)
+    printf("enter x1 and x2 = \n");
+    scanf("%lf %lf",&x1,&x2);
+    if (fn(x1)*fn(x2) > 0)
     {
-        if (y(x1)*y(xm)>0){
-            x1 = xm;
-            xm = (x1+x2)/2.00;
-        }else if (y(x2)*y(xm)>0){
-            x2 = xm ;
-            xm = (x1+x2)/2.00;
-        }
-        // for visualising the algo 
-        printf("x1 = %.16f xm = %.16f x2 = %.16f \n",x1,xm,x2);
-
-
+        printf("please enter different x1 and x2 = \n");
+        scanf("%lf %lf",&x1,&x2);
+    }else{
+        xm = (x1 + x2)/2 ;
     }
 
-    printf("the root of the equation between the specified domain is = %.16f \n",xm);
-    printf("f(x) at that root = %.16f \n",y(xm));
+
+    while (fabs(x1 - x2)>0.0000001)
+    {
+        count++;
+      if (fn(x1)*fn(xm)< 0){
+            x2 = xm ;
+            xm = (x1 + x2)/2 ;
+            
+        }else{
+            x1 = xm ;
+            xm = (x1 + x2)/2 ;
+        }  
+
+        printf("this is %d iteration and values are x1 xm x2 = %lf %lf %lf \n",count,x1,xm,x2);
+    }
+    
+    printf("the root is %.20f \n",xm);
+    printf("%.20f \n",fn(xm));
+
+    printf("the value using newton raphson is %.20f \n",newtonraphson(1.00));
 
     return 0;
 }
 
 
-double y(double a){
-    double x = a;
-    return x*x*x - 12;
+float fn(float x){
+    return (x*x*x) + (4*x*x) - 10;
 }
 
+float newtonraphson(double a){
+
+    double y,y1,h,q,x;
+    int count;
+    x = a;
+
+    y = (x*x*x) + 4*x*x - 10;
+	y1 = 3*x*x + 8*x;
+	h = -y/y1;
+	while(fabs(h)>0.000000001)
+	{	
+		// q = x;
+		y = (x*x*x) + (4*x*x) - 10;
+		y1 = (3*x*x) + (8*x);
+		h = (double)-y/y1;
+		x = x + h ;
+
+		count++;
+		
+		printf("%d count \n",count);
+		// printf("relative error is %.20f\n",fabs((x-q)/q));
+	
+	}
+
+    return x;
+}

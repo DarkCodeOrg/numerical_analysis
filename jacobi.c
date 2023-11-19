@@ -3,7 +3,7 @@
 #include<math.h>
 
 #define TOL 0.000001
-#define MAX 1000
+#define MAX 100
 
 
 int main(){
@@ -11,10 +11,11 @@ int main(){
     printf("enter the n for nxn matrix : ");
     scanf("%d",&n);
 
-    float a[n][n],b[n],temp;
-    double x[n],xnew[n],sum=0,err=0;
-    
-    // matrix input 
+    float a[n][n],b[n],x[n],x_new[n];
+    int i=0,j=0,k=0;
+    float sum = 0;
+
+     // matrix input 
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n+1; j++)
@@ -31,76 +32,45 @@ int main(){
         
     }
 
-//pivoting
-for (int i = 0; i < n; i++){
-        for (int j = 1+i; j < n; j++){
-            if (a[j][0] > a[i][0]){
-                for (int k = 0; k < n+1; k++){
-                    if (k < n)
-                    {
-                        temp = a[i][k];
-                        a[i][k] = a[j][k];
-                        a[j][k] = temp;
-                    }else{   
-                        temp = b[i];
-                        b[i] = b[j];
-                        b[j] = temp;
-                    }
-                    
+    // initial guess 
+    for (int i = 0; i < n; i++){
+        x[i] = 0;
+        x_new[i] = 0;
+    }
+
+
+    // jacobi iterations
+    while (k < MAX)
+    {
+        for ( i = 0; i < n; i++)
+        {   
+            sum = 0;
+            x_new[i] = b[i]/a[i][i];
+            for ( j = 0; j < n; j++)
+            {
+                if (i != j)
+                {
+                    sum += a[i][j]*x[j];
                 }
-            }   
-        }
-    }
-    
-// initial guess 
-for (int i = 0; i < n; i++){
-    x[i] = 0;
-}
-
-// jacobi iteration 
-for (int k = 0; k < MAX; k++){
-
-    err = 0;
-    
-    for (int i = 0; i < n; i++){
-
-        sum = 0;
-
-        for (int j = 0; j < n; j++){
-            if (j != i){
-                sum += a[i][j]*x[j];
+                
             }
+
+            x_new[i] = x_new[i] - (sum/a[i][i]);
+            
+        }
+        for (int i = 0; i < n; i++)
+        {
+            x[i] = x_new[i];
         }
 
-        xnew[i] = (b[i] - sum)/a[i][i] ;
-        printf("it no = %d , x[%d] = %f\t",k,i,xnew[i]); // debugging purpose
+        printf("%d iteration : x1 = %f , x2 = %f , x3 = %f \n",k,x[0],x[1],x[2]);
+        
+        k++;
     }
     
-    printf("\n"); // formatting , debug
-
-    for (int l = 0; l < n; l++){
-        err += fabs(xnew[l] - x[l]);
-    }
-
-    if (err < TOL){
-        break;
-    }
-
-    for (int m = 0; m < n; m++){
-        x[m] = xnew[m];
-    }
- 
-}
-
-// solution 
-    printf("hence the solutions are : ");
-    for (int i = 0; i < n; i++){
-        printf("%.10f \t",x[i]);
-    }
-    printf("\n");
+    
+    
 
 
     return 0;
 }
-
-
