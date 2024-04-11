@@ -2,10 +2,7 @@
 #include<stdlib.h>
 #include<math.h>
 
-#define TOL 0.000001
 #define MAX 100
-
-
 int main(){
     int n;
     printf("enter the n for nxn matrix : ");
@@ -58,9 +55,9 @@ int main(){
             x_new[i] = x_new[i] - (sum/a[i][i]);
             
         }
-        for (int i = 0; i < n; i++)
+        for (int l = 0; l < n; l++)
         {
-            x[i] = x_new[i];
+            x[l] = x_new[l];
         }
 
         printf("%d iteration : x1 = %f , x2 = %f , x3 = %f \n",k,x[0],x[1],x[2]);

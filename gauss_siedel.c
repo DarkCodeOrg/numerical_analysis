@@ -2,7 +2,6 @@
 #include<stdlib.h>
 #include<math.h>
 
-#define TOL 0.000001
 #define MAX 100
 
 
@@ -69,3 +68,4 @@ int main(){
 
     return 0;
 }
+
